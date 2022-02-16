@@ -1,0 +1,16 @@
+---
+- name: Playing with Whitespace in Jinja Templates
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Run template with vars
+      template:
+        src: mytemplate.j2
+        dest: ./mytemplate-rendered.out
+      vars:
+        sequence:
+          - 1
+          - 2
+          - 3

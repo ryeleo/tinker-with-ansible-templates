@@ -1,0 +1,85 @@
+## `for` Loop Examples
+
+1. We can gobble up leading whitespace before the variable, and also newlines that come after a variable.
+('-' at end of 'for', and also at start of 'endfor').
+{% for item in sequence -%}
+    {{ item }}
+{%- endfor %}
+
+
+2. We can gobble up any leading whitespace. 
+('-' at end of for).
+{% for item in sequence -%}
+    {{ item }}
+{% endfor %}
+
+3. Notice that trim_blocks is enabled by default, while lstrip_blocks is disabled by default (for Ansible templates).
+Print the sequence with no '-' anywhere.
+{% for item in sequence %}
+    {{ item }}
+{% endfor %}
+
+Notice that:
+
+1. each item is still indented (lstrip_blocks is disabled), and
+2. there is no excess vertical space (trim_blocks is enabled).
+
+
+4. We can disable trim_blocks using a + at the end of the expression:
+{% for item in sequence +%}
+    {{ item }}
+{% endfor %}
+
+5. We can try to disable 
+{% for item in sequence %}
+    {{+ item }}
+{% endfor %}
+
+## `if` Conditional examples
+
+1. Indented conditional statements without using any whitespace control:
+    {% if True %}
+        * Expect 2 leading tabs here.
+    {% endif %}
+END of list
+
+2. Indented conditional statements with whitespace control at start of endif:
+    {% if True %}
+        * Expect 2 leading tabs here.
+    {%- endif %}
+END of list
+
+3. Indented conditional statements with whitespace control at end of endif:
+{% if True %}
+        * Expect 2 leading tabs here.
+{% endif -%}
+END of list
+
+4. Indented conditional statements with whitespace control (1) at end of 'endif' and (2) at start of 'if':
+    {%- if True %}
+        * Expect 2 leading tabs here.
+    {% endif -%}
+END of list
+
+
+5. Indented conditional statements with no whitespace control:
+{% if True %}
+        * Expect 2 leading tabs here.
+{% endif %}
+END of list
+
+## A Real Example
+
+iccp {
+    local-ip-addr 1.2.3.4;
+    peer 1.2.3.5 {
+        liveness-detection {
+            minimum-interval 12;
+            multiplier 1;
+            {% if True -%}
+            single-hop;
+            {% endif -%}
+        }
+        authentication-key "SuperSecret";
+    }
+}
